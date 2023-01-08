@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quanta.vi.mapper.WordBookMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.quanta.vi.entity.WordBook">
+        <id column="id" property="id"/>
+        <result column="word_id" property="wordId"/>
+        <result column="book_id" property="bookId"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+    <select id="getBookWordByPage" resultType="com.quanta.vi.entity.Word">
+        SELECT w.*
+        FROM word_book AS wb,
+             word AS w
+        WHERE book_id = #{bookId}
+          AND w.id = wb.word_id
+          AND w.is_deleted = 0
+          AND wb.is_Deleted = 0
+        LIMIT #{start},#{size}
+    </select>
+
+    <select id="getBookWordByPageCount" resultType="Long">
+        SELECT COUNT(*)
+        FROM word_book AS wb,
+             word AS w
+        WHERE book_id = #{bookId}
+          AND w.id = wb.word_id
+          AND w.is_deleted = 0
+          AND wb.is_Deleted = 0
+    </select>
+
+    <select id="searchWord" resultType="com.quanta.vi.entity.Word">
+        SELECT w.* FROM
+        <if test="bookId!=null">
+            word_book AS wb,
+        </if>
+        word AS w
+        <where>
+            w.is_deleted = 0
+            AND (w.vi LIKE CONCAT('%',#{keyWord},'%')
+            OR w.translation_ch LIKE CONCAT('%',#{keyWord},'%')
+            OR w.translation_en LIKE CONCAT('%',#{keyWord},'%')
+            )
+            <if test="bookId!=null">
+                AND w.id = wb.word_id
+                AND wb.book_id = #{bookId}
+                AND wb.is_Deleted = 0
+            </if>
+        </where>
+        LIMIT #{start},#{size}
+    </select>
+
+    <select id="searchWordCount" resultType="Long">
+        SELECT COUNT(*) FROM
+        <if test="bookId!=null">
+            word_book AS wb,
+        </if>
+        word AS w
+        <where>
+            w.is_deleted = 0
+            AND (w.vi LIKE CONCAT('%',#{keyWord},'%')
+            OR w.translation_ch LIKE CONCAT('%',#{keyWord},'%')
+            OR w.translation_en LIKE CONCAT('%',#{keyWord},'%')
+            )
+            <if test="bookId!=null">
+                AND w.id = wb.word_id
+                AND wb.book_id = #{bookId}
+                AND wb.is_Deleted = 0
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

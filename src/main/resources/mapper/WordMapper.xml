@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quanta.vi.mapper.WordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.quanta.vi.entity.Word">
+        <id column="id" property="id" />
+        <result column="vi" property="vi" />
+        <result column="translation_ch" property="translationCh" />
+        <result column="translation_en" property="translationEn" />
+        <result column="tag" property="tag" />
+        <result column="pronunciation" property="pronunciation" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+</mapper>
